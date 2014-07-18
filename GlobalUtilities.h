@@ -1,28 +1,14 @@
-/******************************************************************************
- *  \file GlobalUtilities.h
- *  \author Matt Nunogawa (@amattn)
+/**
+ *  Author Matt Nunogawa (@amattn) https://github.com/amattn/AMNGlobalUtilities
  *
- *  \brief Useful, Nigh-Indispensable Collection of macros and utilities
- *  \details Original version created by Matthew Nunogawa on Mon Sep 22 2003.
- *           https://github.com/amattn/AMNGlobalUtilities
- *
- *  \version 2.1.8
- *  \copyright Copyright Matthew Nunogawa 2003-2013.
- *             This software is provided under the MIT License.
- *             Please see LICENSE file.
+ *  Copyright Matthew Nunogawa 2003-2013.
+ *  This software is provided under the MIT License.
  */
 
-#pragma mark -
-#pragma mark ** Convenience macros **
-
 // Quickly make an NSError
-#define AMN_QUICK_ERROR(error_code, error_description) [NSError errorWithDomain:NSStringFromClass([self class]) code:error_code userInfo:[NSDictionary dictionaryWithObject:error_description forKey:NSLocalizedDescriptionKey]];
+#define NSErrorMake(error_code, error_description) [NSError errorWithDomain:NSStringFromClass([self class]) code:error_code userInfo:[NSDictionary dictionaryWithObject:error_description forKey:NSLocalizedDescriptionKey]];
 
-// Quickly get portrait mode
-#define AMN_ORIENTATION_IS_PORTRAIT UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation])
-
-#pragma mark -
-#pragma mark ** Log macros **
+#pragma mark - Log
 
 // standard types
 #define LOG_BOOL(object)    (NSLog(@"" #object @" %@", (object ? @"YES" : @"NO") ));
@@ -38,11 +24,11 @@
 
 // NSInteger and NSInteger are platform independant integer types
 #if __LP64__ || (TARGET_OS_EMBEDDED && !TARGET_OS_IPHONE) || TARGET_OS_WIN32 || NS_BUILD_32_LIKE_64
-#define LOG_INTEGER(object)     (NSLog(@"" #object @" %ld", object ));
-#define LOG_UINTEGER(object)    (NSLog(@"" #object @" %lu", object ));
+  #define LOG_INTEGER(object)     (NSLog(@"" #object @" %ld", object ));
+  #define LOG_UINTEGER(object)    (NSLog(@"" #object @" %lu", object ));
 #else
-#define LOG_INTEGER(object)     (NSLog(@"" #object @" %d", object ));
-#define LOG_UINTEGER(object)    (NSLog(@"" #object @" %u", object ));
+  #define LOG_INTEGER(object)     (NSLog(@"" #object @" %d", object ));
+  #define LOG_UINTEGER(object)    (NSLog(@"" #object @" %u", object ));
 #endif
 
 // Various Cocoa/Objective-C log macros
@@ -58,20 +44,7 @@
 #define START_TIME(tag) NSDate *startTime_ ## tag = [NSDate date];NSLog(@"start           " #tag);
 #define CHECK_TIME(tag) NSLog(@"elapsed %0.5f " #tag, [[NSDate date] timeIntervalSinceDate:startTime_ ## tag]);
 
-// Various Cocoa struct log macros
-// NSRange
-#define LOG_RANGE(range)    (NSLog(@"" #range @" loc:%u len:%u", range.location, range.length ));
-// CGPoint
-#define LOG_POINT(point)    (NSLog(@"" #point @" x:%f y:%f", point.x, point.y ));
-// CGSize
-#define LOG_SIZE(size)      (NSLog(@"" #size @" width:%f height:%f", size.width, size.height ));
-// CGRect
-#define LOG_RECT(rect)      (NSLog(@"" #rect @" x:%f y:%f w:%f h:%f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height ));
-// CLLocationCoordinate2D
-#define LOG_COORD2D(coord)  (NSLog(@"" #coord @" lat,lon: %+.6f,%+.6f",coord.latitude, coord.longitude ));
-
-#pragma mark -
-#pragma mark ** Assertion macros **
+#pragma mark - Assertion macros
 
 // Standard Assertions
 #define ASSERT_NIL(x)           NSAssert4((x == nil), @"\n\n    ****  Unexpected Nil Assertion  ****\n    ****  Expected nil, but " #x @" is not nil.\nin file:%s at line %i in Method %@ with object:\n %@", __FILE__, __LINE__, NSStringFromSelector(_cmd), self)
@@ -108,8 +81,7 @@ description:(desc), ##__VA_ARGS__]; \
 
 #endif
 
-#pragma mark -
-#pragma mark ** Utilities **
+#pragma mark - Utilities
 
 // Unabashedly cribbed from Wil Shipley (of Delicious Monster fame)
 // http://www.wilshipley.com/blog/2005/10/pimp-my-code-interlude-free-code.html
@@ -118,13 +90,4 @@ static inline BOOL isEmpty(id thing)
     return thing == nil
     || ([thing respondsToSelector:@selector(length)] && [(NSData *)thing length] == 0)
     || ([thing respondsToSelector:@selector(count)] && [(NSArray *)thing count] == 0);
-}
-
-// UUIDs are uuuseful.
-static inline CFStringRef createUniqueString(void)
-{
-    CFUUIDRef uuid = CFUUIDCreate(NULL);
-    CFStringRef uuidStringRef = CFUUIDCreateString(NULL, uuid);
-    CFRelease(uuid);
-    return uuidStringRef;
 }
