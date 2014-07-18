@@ -1,8 +1,11 @@
 /**
- *  Author Matt Nunogawa (@amattn) https://github.com/amattn/AMNGlobalUtilities
+ *  Author Matt Nunogawa (@amattn)
+ *  Author Maxim Veksler (@mvxlr)
  *
  *  Copyright Matthew Nunogawa 2003-2013.
  *  This software is provided under the MIT License.
+ * 
+ *  https://github.com/maximveksler/AMNGlobalUtilities
  */
 
 // Quickly make an NSError
